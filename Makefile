@@ -6,10 +6,10 @@ INSTALL_TARGET_PROCESSES = SpringBoard
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = PerfectAlerts13
-PerfectAlerts13_FILES = PerfectAlerts13.xm
-PerfectAlerts13_CFLAGS = -fobjc-arc
-PerfectAlerts13_EXTRA_FRAMEWORKS += Cephei
+TWEAK_NAME = PerfectAlerts
+PerfectAlerts_FILES = PerfectAlerts.xm
+PerfectAlerts_CFLAGS = -fobjc-arc
+PerfectAlerts_EXTRA_FRAMEWORKS += Cephei
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

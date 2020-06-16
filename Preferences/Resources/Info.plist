@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>PerfectAlerts13Prefs</string>
+	<string>PerfectAlertsPrefs</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.johnzaro.perfectalerts13prefs</string>
 	<key>CFBundleInfoDictionaryVersion</key>
