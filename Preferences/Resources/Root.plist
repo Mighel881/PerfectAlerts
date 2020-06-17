@@ -32,9 +32,7 @@
         	<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Settings</string>
-			<key>footerText</key>
-			<string>Low Battery Banner Disables The Low Battery Alert And Shows A Banner Instead</string>
+			<string>GENERAL</string>
         </dict>
 		<dict>
 			<key>cell</key>
@@ -61,16 +59,32 @@
 			<string>Hide DND Notification</string>
 		</dict>
 		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>LOW BATTERY ALERT</string>
+        </dict>
+		<dict>
 			<key>cell</key>
-			<string>PSSwitchCell</string>
+			<string>PSSegmentCell</string>
 			<key>default</key>
-			<false/>
+			<integer>0</integer>
 			<key>defaults</key>
 			<string>com.johnzaro.perfectalerts13</string>
 			<key>key</key>
-			<string>lowBatteryBanner</string>
-			<key>label</key>
-			<string>Low Battery Banner</string>
+			<string>lowBatteryStyle</string>
+			<key>validTitles</key>
+			<array>
+      			<string>Default</string>
+      			<string>Banner Instead</string>
+      			<string>Disable</string>
+			</array>
+      		<key>validValues</key>
+			<array>
+      			<string>0</string>
+      			<string>1</string>
+      			<string>2</string>
+			</array>
 		</dict>
 		<dict>
         	<key>cell</key>

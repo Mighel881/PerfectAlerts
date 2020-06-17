@@ -9,7 +9,7 @@ static HBPreferences *pref;
 static BOOL enabled;
 static BOOL disableNotificationsFromShortcuts;
 static BOOL hideDNDNotification;
-static BOOL lowBatteryBanner;
+static NSInteger lowBatteryStyle;
 
 static dispatch_queue_t getBBServerQueue()
 {
@@ -58,7 +58,7 @@ static dispatch_queue_t getBBServerQueue()
 
 %end
 
-// ------------------------------ LOW BATTERY BANNER NEEDED CODE ------------------------------
+// ------------------------------ LOW BATTERY BANNER ------------------------------
 
 %group lowBatteryBannerGroup
 
@@ -103,7 +103,7 @@ static dispatch_queue_t getBBServerQueue()
 
 	- (void)activateAlertItem: (id)item
 	{
-		if([item isKindOfClass: %c(SBLowPowerAlertItem)] && lowBatteryBanner)
+		if([item isKindOfClass: %c(SBLowPowerAlertItem)])
 		{
 			BBBulletin *bulletin = [[%c(BBBulletin) alloc] init];
 			bulletin.title = @"Low Battery";
@@ -131,29 +131,48 @@ static dispatch_queue_t getBBServerQueue()
 
 %end
 
+// ------------------------------ DISABLE LOW BATTERY ALERT ------------------------------
+
+%group disableLowBatteryAlertGroup
+
+	%hook SBAlertItemsController
+
+	- (void)activateAlertItem: (id)item
+	{
+		if(![item isKindOfClass: %c(SBLowPowerAlertItem)])
+			%orig;
+	}
+
+	%end
+
+%end
+
 %ctor
 {
-    @autoreleasepool
+	pref = [[HBPreferences alloc] initWithIdentifier: @"com.johnzaro.perfectalerts13"];
+	[pref registerDefaults:
+	@{
+		@"enabled": @NO,
+		@"disableNotificationsFromShortcuts": @NO,
+		@"hideDNDNotification": @NO,
+		@"lowBatteryStyle": @0
+	}];
+
+	enabled = [pref boolForKey: @"enabled"];
+	if(enabled)
 	{
-		pref = [[HBPreferences alloc] initWithIdentifier: @"com.johnzaro.perfectalerts13"];
-		[pref registerDefaults:
-		@{
-			@"enabled": @NO,
-			@"disableNotificationsFromShortcuts": @NO,
-			@"hideDNDNotification": @NO,
-			@"lowBatteryBanner": @NO
-    	}];
+		disableNotificationsFromShortcuts = [pref boolForKey: @"disableNotificationsFromShortcuts"];
+		hideDNDNotification = [pref boolForKey: @"hideDNDNotification"];
+		lowBatteryStyle = [pref integerForKey: @"lowBatteryStyle"];
 
-		enabled = [pref boolForKey: @"enabled"];
-		if(enabled)
-		{
-			disableNotificationsFromShortcuts = [pref boolForKey: @"disableNotificationsFromShortcuts"];
-			hideDNDNotification = [pref boolForKey: @"hideDNDNotification"];
-			lowBatteryBanner = [pref boolForKey: @"lowBatteryBanner"];
-
-			if(disableNotificationsFromShortcuts) %init(disableNotificationsFromShortcutsGroup);
-			if(hideDNDNotification) %init(hideDNDNotificationGroup);
-			if(lowBatteryBanner) %init(lowBatteryBannerGroup);
-		}
-    }
+		if(disableNotificationsFromShortcuts)
+			%init(disableNotificationsFromShortcutsGroup);
+		if(hideDNDNotification)
+			%init(hideDNDNotificationGroup);
+		
+		if(lowBatteryStyle == 1)
+			%init(lowBatteryBannerGroup);
+		else if (lowBatteryStyle == 2)
+			%init(disableLowBatteryAlertGroup);
+	}
 }

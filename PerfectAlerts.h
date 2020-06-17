@@ -18,6 +18,6 @@
 @property(copy, nonatomic) id defaultAction;
 @end
 
-@interface NCNotificationRequest : NSObject
+@interface NCNotificationRequest: NSObject
 - (NSString *)sectionIdentifier;
 @end

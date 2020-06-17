@@ -25,7 +25,7 @@ static float headH;
 
 - (CGFloat)preferredHeightForWidth: (CGFloat)width
 {
-	return width / _aspectRatio - 35;
+	return width / _aspectRatio - 26;
 }
 
 + (CGFloat)headerH
