@@ -61,6 +61,14 @@ int (*BKSTerminateApplicationForReasonAndReportWithDescription)(NSString *displa
 	return _specifiers;
 }
 
+- (void)showTestAlert
+{
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Alert Title" message: @"Test Alert" preferredStyle: UIAlertControllerStyleAlert];
+	[alert addAction: [UIAlertAction actionWithTitle: @"OK" style: UIAlertActionStyleDefault handler: nil]];
+	[alert addAction: [UIAlertAction actionWithTitle: @"Cancel" style: UIAlertActionStyleCancel handler: nil]];
+	[self presentViewController: alert animated: YES completion: nil];
+}
+
 - (void)respring
 {
 	pid_t pid;

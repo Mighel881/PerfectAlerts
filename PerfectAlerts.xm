@@ -10,6 +10,9 @@ static BOOL enabled;
 static BOOL disableNotificationsFromShortcuts;
 static BOOL hideDNDNotification;
 static NSInteger lowBatteryStyle;
+static BOOL hideCancelButton;
+static BOOL verticalAlertButtons;
+static BOOL tapOutsideToDismiss;
 
 static dispatch_queue_t getBBServerQueue()
 {
@@ -147,32 +150,85 @@ static dispatch_queue_t getBBServerQueue()
 
 %end
 
+%group tapOutsideToDismissGroup
+
+	%hook UIAlertController
+
+	- (BOOL)_canDismissWithGestureRecognizer
+	{
+		return tapOutsideToDismiss;
+	}
+
+	%end
+
+%end
+
+%group verticalAlertButtonsGroup
+
+	%hook _UIAlertControllerView
+
+	- (void)_configureActionGroupViewToAllowHorizontalLayout: (BOOL)arg1
+	{
+		%orig(!verticalAlertButtons);
+	}
+
+	%end
+
+%end
+
+%group hideCancelButtonGroup
+
+	%hook _UIAlertControllerView
+
+	- (BOOL)showsCancelAction
+	{
+		return !hideCancelButton;
+	}
+
+	%end
+
+%end
+
 %ctor
 {
 	pref = [[HBPreferences alloc] initWithIdentifier: @"com.johnzaro.perfectalerts13"];
-	[pref registerDefaults:
-	@{
-		@"enabled": @NO,
-		@"disableNotificationsFromShortcuts": @NO,
-		@"hideDNDNotification": @NO,
-		@"lowBatteryStyle": @0
-	}];
-
-	enabled = [pref boolForKey: @"enabled"];
+	[pref registerBool: &enabled default: NO forKey: @"enabled"];
 	if(enabled)
 	{
-		disableNotificationsFromShortcuts = [pref boolForKey: @"disableNotificationsFromShortcuts"];
-		hideDNDNotification = [pref boolForKey: @"hideDNDNotification"];
-		lowBatteryStyle = [pref integerForKey: @"lowBatteryStyle"];
+		NSString *path = [[[NSProcessInfo processInfo] arguments] objectAtIndex: 0];
+		BOOL isApplication = [path containsString: @"/Application"];
+		BOOL isSpringboard = [path containsString: @"SpringBoard.app"];
+		if(isApplication || isSpringboard)
+		{
+			[pref registerBool: &disableNotificationsFromShortcuts default: NO forKey: @"disableNotificationsFromShortcuts"];
+			[pref registerBool: &hideDNDNotification default: NO forKey: @"hideDNDNotification"];
+			[pref registerInteger: &lowBatteryStyle default: 0 forKey: @"lowBatteryStyle"];
+			[pref registerBool: &hideCancelButton default: NO forKey: @"hideCancelButton"];
+			[pref registerBool: &verticalAlertButtons default: NO forKey: @"verticalAlertButtons"];
+			[pref registerBool: &tapOutsideToDismiss default: NO forKey: @"tapOutsideToDismiss"];
 
-		if(disableNotificationsFromShortcuts)
-			%init(disableNotificationsFromShortcutsGroup);
-		if(hideDNDNotification)
-			%init(hideDNDNotificationGroup);
-		
-		if(lowBatteryStyle == 1)
-			%init(lowBatteryBannerGroup);
-		else if (lowBatteryStyle == 2)
-			%init(disableLowBatteryAlertGroup);
+			if(isSpringboard)
+			{
+				if(disableNotificationsFromShortcuts)
+					%init(disableNotificationsFromShortcutsGroup);
+				
+				if(hideDNDNotification)
+					%init(hideDNDNotificationGroup);
+				
+				if(lowBatteryStyle == 1)
+					%init(lowBatteryBannerGroup);
+				else if (lowBatteryStyle == 2)
+					%init(disableLowBatteryAlertGroup);
+			}
+
+			// if(tapOutsideToDismiss)
+				%init(tapOutsideToDismissGroup);
+
+			// if(verticalAlertButtons)
+				%init(verticalAlertButtonsGroup);
+
+			// if(hideCancelButton)
+				%init(hideCancelButtonGroup);
+		}
 	}
 }

@@ -90,6 +90,70 @@
         	<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
+			<string>ALERT STYLE</string>
+			<key>footerText</key>
+			<string>THE 'ALERT STYLE' SETTINGS DON'T NEED A RESPRING TO TAKE EFFECT.
+			
+PRESS THE 'TEST ALERT' TO TEST THE SELECTED OPTIONS.</string>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectalerts13</string>
+			<key>key</key>
+			<string>tapOutsideToDismiss</string>
+			<key>label</key>
+			<string>Tap Outside To Dismiss</string>
+			<key>PostNotification</key>
+			<string>com.johnzaro.perfectalerts13/ReloadPrefs</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectalerts13</string>
+			<key>key</key>
+			<string>verticalAlertButtons</string>
+			<key>label</key>
+			<string>Vertical Alert Buttons</string>
+			<key>PostNotification</key>
+			<string>com.johnzaro.perfectalerts13/ReloadPrefs</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSSwitchCell</string>
+			<key>default</key>
+			<false/>
+			<key>defaults</key>
+			<string>com.johnzaro.perfectalerts13</string>
+			<key>key</key>
+			<string>hideCancelButton</string>
+			<key>label</key>
+			<string>Hide Cancel Button</string>
+			<key>PostNotification</key>
+			<string>com.johnzaro.perfectalerts13/ReloadPrefs</string>
+		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+        </dict>
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>action</key>
+			<string>showTestAlert</string>
+			<key>label</key>
+			<string>Test Alert</string>
+		</dict>
+		<dict>
+        	<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
 			<string>ABOUT THIS TWEAK</string>
         </dict>
 		<dict>
